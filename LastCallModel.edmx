@@ -1,0 +1,369 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="lastcallModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="foodoffers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="offerdate" Type="datetime" />
+          <Property Name="offerstarttime" Type="datetime" />
+          <Property Name="offerendtime" Type="datetime" />
+          <Property Name="offername" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="offerdescription" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="supplierid" Type="int" Nullable="false" />
+          <Property Name="qtyavailable" Type="int" Nullable="false" />
+          <Property Name="foodtypeid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="foodpreferences">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="subscriberid" Type="int" Nullable="false" />
+          <Property Name="preferenceid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="foodtypes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="foodtype" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="subscribers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="email" Type="varchar" MaxLength="50" />
+          <Property Name="friendlyname" Type="varchar" MaxLength="50" />
+          <Property Name="phone" Type="varchar" MaxLength="50" />
+          <Property Name="deliveryaddress" Type="varchar" MaxLength="255" />
+          <Property Name="emailoffers" Type="tinyint" />
+          <Property Name="textoffers" Type="tinyint" />
+          <Property Name="onmailinglist" Type="tinyint" />
+          <Property Name="password" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="suppliers">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="address" Type="varchar" MaxLength="255" />
+          <Property Name="phone" Type="varchar" MaxLength="45" />
+          <Property Name="description" Type="varchar" MaxLength="255" />
+          <Property Name="logo" Type="varbinary(max)" />
+          <Property Name="url" Type="varchar" MaxLength="255" />
+          <Property Name="mapurl" Type="varchar" MaxLength="255" />
+          <Property Name="contactperson" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_foodoffers_foodtypes">
+          <End Role="foodtypes" Type="Self.foodtypes" Multiplicity="1" />
+          <End Role="foodoffers" Type="Self.foodoffers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="foodtypes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodoffers">
+              <PropertyRef Name="foodtypeid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_foodoffers_suppliers">
+          <End Role="suppliers" Type="Self.suppliers" Multiplicity="1" />
+          <End Role="foodoffers" Type="Self.foodoffers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="suppliers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodoffers">
+              <PropertyRef Name="supplierid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_foodpreferences_foodtypes">
+          <End Role="foodtypes" Type="Self.foodtypes" Multiplicity="1" />
+          <End Role="foodpreferences" Type="Self.foodpreferences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="foodtypes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodpreferences">
+              <PropertyRef Name="preferenceid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_foodpreferences_subscribers">
+          <End Role="subscribers" Type="Self.subscribers" Multiplicity="1" />
+          <End Role="foodpreferences" Type="Self.foodpreferences" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscribers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodpreferences">
+              <PropertyRef Name="subscriberid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="lastcallModelStoreContainer">
+          <EntitySet Name="foodoffers" EntityType="Self.foodoffers" Schema="lastcall" store:Type="Tables" />
+          <EntitySet Name="foodpreferences" EntityType="Self.foodpreferences" Schema="lastcall" store:Type="Tables" />
+          <EntitySet Name="foodtypes" EntityType="Self.foodtypes" Schema="lastcall" store:Type="Tables" />
+          <EntitySet Name="subscribers" EntityType="Self.subscribers" Schema="lastcall" store:Type="Tables" />
+          <EntitySet Name="suppliers" EntityType="Self.suppliers" Schema="lastcall" store:Type="Tables" />
+          <AssociationSet Name="FK_foodoffers_foodtypes" Association="Self.FK_foodoffers_foodtypes">
+            <End Role="foodtypes" EntitySet="foodtypes" />
+            <End Role="foodoffers" EntitySet="foodoffers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_foodoffers_suppliers" Association="Self.FK_foodoffers_suppliers">
+            <End Role="suppliers" EntitySet="suppliers" />
+            <End Role="foodoffers" EntitySet="foodoffers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_foodpreferences_foodtypes" Association="Self.FK_foodpreferences_foodtypes">
+            <End Role="foodtypes" EntitySet="foodtypes" />
+            <End Role="foodpreferences" EntitySet="foodpreferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_foodpreferences_subscribers" Association="Self.FK_foodpreferences_subscribers">
+            <End Role="subscribers" EntitySet="subscribers" />
+            <End Role="foodpreferences" EntitySet="foodpreferences" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="lastcallModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="foodoffer">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="offerdate" Type="DateTime" Precision="3" />
+          <Property Name="offerstarttime" Type="DateTime" Precision="3" />
+          <Property Name="offerendtime" Type="DateTime" Precision="3" />
+          <Property Name="offername" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="offerdescription" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="supplierid" Type="Int32" Nullable="false" />
+          <Property Name="qtyavailable" Type="Int32" Nullable="false" />
+          <Property Name="foodtypeid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="foodtype" Relationship="lastcallModel.FK_foodoffers_foodtypes" FromRole="foodoffer" ToRole="foodtype" />
+          <NavigationProperty Name="supplier" Relationship="lastcallModel.FK_foodoffers_suppliers" FromRole="foodoffer" ToRole="supplier" />
+        </EntityType>
+        <EntityType Name="foodpreference">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="subscriberid" Type="Int32" Nullable="false" />
+          <Property Name="preferenceid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="foodtype" Relationship="Self.FK_foodpreferences_foodtypes" FromRole="foodpreferences" ToRole="foodtypes" />
+          <NavigationProperty Name="subscriber" Relationship="Self.FK_foodpreferences_subscribers" FromRole="foodpreferences" ToRole="subscribers" />
+        </EntityType>
+        <EntityType Name="foodtype">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="foodtype1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="foodpreferences" Relationship="Self.FK_foodpreferences_foodtypes" FromRole="foodtypes" ToRole="foodpreferences" />
+          <NavigationProperty Name="foodoffers" Relationship="lastcallModel.FK_foodoffers_foodtypes" FromRole="foodtype" ToRole="foodoffer" />
+        </EntityType>
+        <EntityType Name="subscriber">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="friendlyname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="deliveryaddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="emailoffers" Type="Byte" />
+          <Property Name="textoffers" Type="Byte" />
+          <Property Name="onmailinglist" Type="Byte" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="foodpreferences" Relationship="Self.FK_foodpreferences_subscribers" FromRole="subscribers" ToRole="foodpreferences" />
+        </EntityType>
+        <EntityType Name="supplier">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="phone" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="logo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="mapurl" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="contactperson" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="foodoffers" Relationship="lastcallModel.FK_foodoffers_suppliers" FromRole="supplier" ToRole="foodoffer" />
+        </EntityType>
+        <Association Name="FK_foodpreferences_foodtypes">
+          <End Role="foodtypes" Type="Self.foodtype" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="foodpreferences" Type="Self.foodpreference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="foodtypes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodpreferences">
+              <PropertyRef Name="preferenceid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_foodpreferences_subscribers">
+          <End Role="subscribers" Type="Self.subscriber" Multiplicity="1" />
+          <End Role="foodpreferences" Type="Self.foodpreference" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="subscribers">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodpreferences">
+              <PropertyRef Name="subscriberid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="lastcallEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="foodoffers" EntityType="Self.foodoffer" />
+          <EntitySet Name="foodpreferences" EntityType="Self.foodpreference" />
+          <EntitySet Name="foodtypes" EntityType="Self.foodtype" />
+          <EntitySet Name="subscribers" EntityType="Self.subscriber" />
+          <EntitySet Name="suppliers" EntityType="Self.supplier" />
+          <AssociationSet Name="FK_foodpreferences_foodtypes" Association="Self.FK_foodpreferences_foodtypes">
+            <End Role="foodtypes" EntitySet="foodtypes" />
+            <End Role="foodpreferences" EntitySet="foodpreferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_foodpreferences_subscribers" Association="Self.FK_foodpreferences_subscribers">
+            <End Role="subscribers" EntitySet="subscribers" />
+            <End Role="foodpreferences" EntitySet="foodpreferences" />
+          </AssociationSet>
+          <AssociationSet Name="FK_foodoffers_foodtypes" Association="lastcallModel.FK_foodoffers_foodtypes">
+            <End Role="foodtype" EntitySet="foodtypes" />
+            <End Role="foodoffer" EntitySet="foodoffers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_foodoffers_suppliers" Association="lastcallModel.FK_foodoffers_suppliers">
+            <End Role="supplier" EntitySet="suppliers" />
+            <End Role="foodoffer" EntitySet="foodoffers" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_foodoffers_foodtypes">
+          <End Type="lastcallModel.foodtype" Role="foodtype" Multiplicity="1" />
+          <End Type="lastcallModel.foodoffer" Role="foodoffer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="foodtype">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodoffer">
+              <PropertyRef Name="foodtypeid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_foodoffers_suppliers">
+          <End Type="lastcallModel.supplier" Role="supplier" Multiplicity="1" />
+          <End Type="lastcallModel.foodoffer" Role="foodoffer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="supplier">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="foodoffer">
+              <PropertyRef Name="supplierid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="lastcallModelStoreContainer" CdmEntityContainer="lastcallEntities">
+          <EntitySetMapping Name="foodoffers">
+            <EntityTypeMapping TypeName="lastcallModel.foodoffer">
+              <MappingFragment StoreEntitySet="foodoffers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="offerdate" ColumnName="offerdate" />
+                <ScalarProperty Name="offerstarttime" ColumnName="offerstarttime" />
+                <ScalarProperty Name="offerendtime" ColumnName="offerendtime" />
+                <ScalarProperty Name="offername" ColumnName="offername" />
+                <ScalarProperty Name="offerdescription" ColumnName="offerdescription" />
+                <ScalarProperty Name="supplierid" ColumnName="supplierid" />
+                <ScalarProperty Name="qtyavailable" ColumnName="qtyavailable" />
+                <ScalarProperty Name="foodtypeid" ColumnName="foodtypeid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="foodpreferences">
+            <EntityTypeMapping TypeName="lastcallModel.foodpreference">
+              <MappingFragment StoreEntitySet="foodpreferences">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="subscriberid" ColumnName="subscriberid" />
+                <ScalarProperty Name="preferenceid" ColumnName="preferenceid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="foodtypes">
+            <EntityTypeMapping TypeName="lastcallModel.foodtype">
+              <MappingFragment StoreEntitySet="foodtypes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="foodtype1" ColumnName="foodtype" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="subscribers">
+            <EntityTypeMapping TypeName="lastcallModel.subscriber">
+              <MappingFragment StoreEntitySet="subscribers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="friendlyname" ColumnName="friendlyname" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="deliveryaddress" ColumnName="deliveryaddress" />
+                <ScalarProperty Name="emailoffers" ColumnName="emailoffers" />
+                <ScalarProperty Name="textoffers" ColumnName="textoffers" />
+                <ScalarProperty Name="onmailinglist" ColumnName="onmailinglist" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="suppliers">
+            <EntityTypeMapping TypeName="lastcallModel.supplier">
+              <MappingFragment StoreEntitySet="suppliers">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="logo" ColumnName="logo" />
+                <ScalarProperty Name="url" ColumnName="url" />
+                <ScalarProperty Name="mapurl" ColumnName="mapurl" />
+                <ScalarProperty Name="contactperson" ColumnName="contactperson" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
